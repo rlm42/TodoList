@@ -1,0 +1,13 @@
+
+-----------------------
+ EF Migration Commands
+-----------------------
+
+https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/
+
+	Add Migration		:	add-migration {migration_name}		Call first migration 'InitDb'
+	Update Database		:	update-database 
+	Revert Migration	:	update-database {last_good_migration}
+	Remove Migration	:	remove-migration {migration_name}
+	Script Migration	:	script-migration
+

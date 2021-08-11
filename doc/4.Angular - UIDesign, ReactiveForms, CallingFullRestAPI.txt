@@ -1,0 +1,125 @@
+Revision,
+
+Components
+
+Services
+
+Modules
+
+
+Reactive Forms
+
+
+Adding New Todo List Item
+
+
+
+--------------------------
+
+--- Using Bootstrap
+		
+
+	Google bootstrap > Documentation > Tables > Striped Table
+
+	Ref: https://getbootstrap.com/docs/4.3/content/tables/#striped-rows
+
+	Place in your todolist.component.html file:
+
+<table class="table table-striped">
+    <tbody>
+        <tr *ngFor="let item of todoList">
+            <td>
+                {{item.name}}
+            </td>
+            <td>
+                <i *ngIf="item.isDone" class="fa fa-check"></i>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+Run application. You should see striped list of items with checks next to the ones that are done.
+
+
+--------------------------
+* *ngFor directive
+--------------------------
+
+Ref: https://angular.io/guide/structural-directives
+
+	<tr *ngFor="let item of todoList"></tr>
+
+*ngFor iterates array of objects defined inside component's .ts file
+	and repeatedly renders the html element it is placed inside, for each item of the array. In our case the array is TodoList. 
+
+--------------------------
+* Interpolation
+--------------------------
+
+Ref: https://angular.io/guide/template-syntax
+
+To display values of variables from component.ts file directly in component.html, outside of any tag, or in the space surrounded by element tags: 
+We place the name of the variable between double curly braces:
+
+{{item.name}}
+
+NOTE: On clientside object fields names are transformed into camel case (starting with lower case letter) : "name"
+as opposed to what they are on serverside in pascal case (starting with capital letter) : "Name"
+
+
+--------------------------
+* *ngIf directive
+--------------------------
+
+Used to display html element conditionally (depending on true or false evaluation of certain variable or expression)
+
+In this case we are displaying glyph icon checked, under a condition that current item in the for loop has value of the field isDone is set to true.
+
+<i *ngIf="item.isDone" class="fa fa-check"></i>
+
+NOTE: We are using class "fa fa-check" from font-awesome library
+
+
+Encapsulate icon css classes
+We need to move all font-awesome classes to common file for icons and access it from there
+Create cosntants/icons.ts with the following:
+
+export const icons = {
+    check: 'fa fa-check'
+};
+
+
+Inside todo-list.component.ts 
+	import { icons } fom 'src/app/constants/icons';
+Add variable: icons = icons;
+
+Inside todo-list.html replace hardcoded font-awesome class with variable icons.check
+
+<i *ngIf="item.isDone" [class]="icons.check"></i>
+
+NOTE: Attribute class is now surrounded by square brackets because it is accessing a variable in .ts file
+
+
+--------------------------
+* [] attribute input
+--------------------------
+	
+Surround html element attribute with Square Brackets [] when the attribute recieves input from variable inside .ts file
+
+For example to reieve a class name from variable we can wrap class attribute in []:
+<i *ngIf="item.isDone" [class]="icons.check"></i>
+
+
+--------------------------
+* ngClass directive
+--------------------------
+
+Ref: https://angular.io/api/common/NgClass
+
+The ngClass applices a css class conditonally (depending on true or false evaluation of certain variable or expression)
+In the table row containing our ngFor statement, add the following inside the <tr> tag:
+[ngClass]="{'bg-success': item.isDone}"
+
+This will apply Bootstrap 'bg-success' css class when item in for loop iteration has value of isDone field equal to true.
+Ref: https://getbootstrap.com/docs/4.0/utilities/colors/#background-color
+

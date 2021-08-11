@@ -1,0 +1,352 @@
+Steps:
+
+
+----------------------------------
+
+	Server App
+
+----------------------------------
+
+
+Visual Studio > New Project > Web App > Angular Template
+
+Clean up unneeded files and folders from project (Delete ClientApp, Controllers, Pages folders)
+
+Copy server-side app files and folders from previous tutorial:
+	DBContext.cs
+	Entities/
+	Api/
+	Models/
+
+Copy appsettings.json connection string, or can get connection string from SQL Server Object Explorer, database properties
+
+Format startup.cs to have 3 sections - Properties, Constructor, Methods. Add connection string in startup.cs. Add CORS to ConfigureServices method.
+
+Create migrations - Go to Package Manager Console - add-migration InitDb - update-database
+
+comment out the following in startup.cs:
+
+
+                //if (env.IsDevelopment())
+                //{
+                //    spa.UseAngularCliServer(npmScript: "start");
+                //}
+
+Disable VS server side project from launching the browser on run.
+This is because we weant to open ClientApp seperately in VS studio code and run it from there on seperate nodejs server.
+Right click web project - Properties - Debug - Uncheck Launch Browser. Also copy the localhost server side URL address (e.g. https://localhost:44308/)
+
+Open VS code run app will open server side app (nodejs) https://localhost:4200
+
+Build angular app - ng build
+
+Run angular app - ng serve -o
+
+Stop - Ctrl+C
+
+Create 2 pages: Home and TodoList:
+ng g c pages/Home
+ng g c pages/TodoList
+
+Create TopNav partial view
+ng g c partials/TopNav
+
+configure routing inside routing module app-routing.module.ts like the following:
+const routes: Routes = [
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'todo-list', component: TodoListComponent }
+];
+
+
+Set up TopNav bar. Go to Bootstrap website and copy example navbar.https://getbootstrap.com/docs/4.0/components/navbar/
+Then change href to Angular routerLink. This angular attribute will load related component inside routerOutlet element that we are going to place inside app.component
+Copy a navbar code and paste it in to top-nav.component.html
+
+Place routerLink="active" in each link. This attribute defines what css class will be set inside link when app navigates to its corresponding page.
+In bootstrap this class is "active. Like the following:
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <!-- Toggle Menu -->
+    <a class="navbar-brand" routerLink="#">TodoList</a>
+
+    
+    <!-- Toggle Menu -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- Home -->
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home </a>
+        </li>
+        <!-- Todo List -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="todo-list" routerLinkActive="active">Features</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+Set up App component - Place top nav partial component selector inside app.component.html. Put inside div tags: 
+
+<app-top-nav></app-top-nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+
+Delete all placeholder stuff in app.component.html
+
+
+Run and see if nav bar works.
+
+Create TodoList service
+ng g s services/TodoList
+
+Add TodoList service to providers inside app.module.ts
+
+Call server Api with TodoListService to return all the todolist items data
+
+In order to call serverside apis, you need to import HttpClientModule inside AppModule.ts, add HttpClientModule to imports 
+import { HttpClientModule } from '@angular/common/http';
+
+Open todo-list.service.ts. Inject HttpClient service inside constructor like the following: 
+export class TodoListService {
+
+  constructor(private http: HttpClient) { }
+}
+
+
+Create method getTodoList which calls server side api service.
+First you need to get your server side apis url e.g. https://localhost:44308/
+Then append "api" to it so it looks like "https://localhost:44308/api"
+
+
+Inside todo-list.service.ts make it look like the following:
+@Injectable({
+  providedIn: 'root'
+})
+export class TodoListService {
+
+  apiUrl = 'https://localhost:44308/api';
+
+  constructor(private http: HttpClient) { }
+
+  getTodoList(){
+    const url = `${environment}/todos`;
+    this.http.get(url);
+  }
+}
+
+
+
+Place api url variable inside environment.ts like the following:
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:44308/'
+};
+
+
+Refactor the url to use api variable from constants file instead of hardcoding it in the string
+Create src/app/constants/apis.ts constants file. Inside put:
+export const apis = {
+    todos: 'todos'
+};
+
+
+In todo-list.service.ts make it look like the following:
+// Constants
+import { apis } from '../constants/apis';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TodoListService {
+
+  apiUrl = 'https://localhost:44308/api';
+
+  constructor(private http: HttpClient) { }
+
+  getTodoList() {
+    // const url = 'https://localhost:44308/api/todos';   // hardcoded api url
+    // const url = environment.apiUrl + '/todos';         // after putting apiUrl inside environment settings file
+    // const url = `${environment.apiUrl}/todos`;         // using template string instead of concatenating
+    const url = `${environment.apiUrl}/${apis.todos}`;    // after taking out endpointstring and placing it in constants apis.ts file
+    return this.http.get<any>(url);
+  }
+}
+
+
+
+
+Open todo-list.component.ts
+Create new variable 
+Create new empty array: todoList = [];
+Create method loadTodoList() {} and call it from ngOnInit() event
+Inject TodoListService inside constructor
+call TodoListService method getTodoList()
+It should look like: 
+// Services
+import { TodoListService } from 'src/app/services/todo-list.service';
+
+@Component({
+  selector: 'app-todo-list',
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.scss']
+})
+export class TodoListComponent implements OnInit {
+
+  // Properties
+  todoList = [];
+
+  // Constructor
+  constructor(private todoListSvc: TodoListService) { }
+
+  ngOnInit() {
+    this.loadTodoList();
+  }
+
+  loadTodoList() {
+    this.todoListSvc.getTodoList().subscribe(
+      (r) => {
+        this.todoList = r;
+      },
+      // on error
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+}
+
+
+
+- Go to home.component.ts
+Inject Title service into constructor like:
+constructor(private titleSvc: Title) { }
+
+
+
+
+- Create text constants file to place all your app text inside. Add titles like 'Home' and 'Todo List' to it
+export const text = {
+    Home: 'Home',
+    Todolist: 'Todo List'
+};
+
+
+
+- Do the same for todo-list.component.ts
+
+
+- Remove default ClientApp title from index.html
+	replace 
+	<title>ClientApp</title>
+	with 
+	<title></title>
+
+
+- Set App Brand/Logo title in left upper corner to come from your enviroment file
+
+	Inside environment.ts and enviroment.prod.ts add new setting:
+	appName: 'Todo List'
+
+	Inside top-nav.component.ts
+	import environment
+	create new variable: 
+ appName = environment.appName;
+
+
+- Insider top-nav.component.html
+Replace <a class="navbar-brand" routerLink="#">TodoList</a> with  <a class="navbar-brand" routerLink="#">{{appName}}</a>
+
+
+
+- Inside app.settings.Development.json
+Comment out local connection string and add instead remote server's db connection string
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Debug",
+            "System": "Information",
+            "Microsoft": "Information"
+        },
+        "ConnectionStrings": {
+            //"DefaultConnectionString":"Data Source=RYAN-LAPTOP\\TEW_SQLEXPRESS;Initial Catalog=todo_list;Integrated Security=True;"
+            "DefaultConnectionString": "Data Source=SQL7005.site4now.net;Initial Catalog=DB_A4B6CE_todolist;User Id=DB_A4B6CE_todolist_admin;Password=Password1;"
+        }
+    }
+}
+
+Then run 'update-database' in Package Manager Console. This will update rewmote server changes.
+
+Revert appsettings.Development.json
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Debug",
+            "System": "Information",
+            "Microsoft": "Information"
+        },
+        "ConnectionStrings": {
+            //"DefaultConnectionString":"Data Source=RYAN-LAPTOP\\TEW_SQLEXPRESS;Initial Catalog=todo_list;Integrated Security=True;"
+            "DefaultConnectionString": "Data Source=SQL7005.site4now.net;Initial Catalog=DB_A4B6CE_todolist;User Id=DB_A4B6CE_todolist_admin;Password=Password1;"
+        }
+    }
+}
+
+
+
+
+----------------------------------
+
+	Angular App
+
+----------------------------------
+
+
+Windows Explorer - Browse to Project Root 
+
+Right-Click - Git Bash Here
+
+> ng new ClientApp --routing -S --style = scss		create new 'ClientApp' with routing module, skip tests, with style scss
+
+
+Angular CLI Commands Reference: https://angular.io/cli
+
+
+
+Open VS Code
+
+Install required libraries:
+	Bootstrap, Jquery, popper.js, font-awesome
+
+> npm install bootstrap jquery popper.js font-awesome
+
+Go to angular.json, add the styles and scripts
+
+"styles": [
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
+
+In angular.json change outputPath to 'dist' instead of 'dist/ClientApp'
+
+
+
+
+

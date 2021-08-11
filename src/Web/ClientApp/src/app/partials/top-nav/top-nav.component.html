@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <!-- Toggle Menu -->
+    <a class="navbar-brand" routerLink="">{{appName}}</a>
+
+    
+    <!-- Toggle Menu -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" data-toggle="collapse" data-target="#navbarNav">
+        <!-- Home -->
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home </a>
+        </li>
+        <!-- Todo List -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="todo-list" routerLinkActive="active">To Do List</a>
+        </li>
+          <!-- Guessing Game -->
+          <li class="nav-item">
+            <a class="nav-link" routerLink="guessing-game" routerLinkActive="active">Guessing Game</a>
+          </li>
+      </ul>
+    </div>
+  </nav>

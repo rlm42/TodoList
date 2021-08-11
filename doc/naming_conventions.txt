@@ -1,0 +1,32 @@
+-------------------------------
+-- 	Naming Case Types
+-------------------------------
+
+			
+	Pascal Case:	ThisIsPascalCase		
+	Camel Case:	thisIsCamelCase					
+	Kebab Case:	this-is-kebab-case
+	Snake Case:	this_is_snake_case
+
+
+
+-------------------------------
+-- 	C#
+-------------------------------
+
+
+	Construct			Example
+	------------			-------------
+	Class Varibles/Fields		: _variableName
+	Class Properties		: PropertyName { get; set; }
+	Methods				: MethodName()
+	Method Parameters		: variableName
+	Local/Method Variables		: variableName
+
+
+
+-------------------------------
+-- 	Angular
+-------------------------------
+
+

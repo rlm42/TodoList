@@ -1,0 +1,69 @@
+
+-------------------
+ Windows Shortcuts
+-------------------
+
+	Windows+R	- Run Program
+
+-------------------
+ VS Shortcuts
+-------------------
+
+	Build
+	-----
+	
+	Run
+	-----
+
+	F5		- Run program with debugging
+	Ctrl+F5		- Run program without debugging
+	
+	Debug Serverside
+	-----
+
+	F5		- Let program run with debugging
+	F10		- Step one line forward in debugging
+	F11		- Step inside method/property on the current line of debugging
+	Shift+F5	- Stop debugging
+
+	
+	Other
+	-----
+	
+	Shift+Del	- Delete whole line
+	Ctrl+R+G	- Delete unused usings
+	Shift+Alt+F	- Format code so it gets aligned properly
+	Ctrl+Shift+S	- Save all opened windows
+	Ctrl+Shift+C	- Close all opened windows
+	Ctrl+R (twice)	- Rename after doing twice (after highlighting a variable)
+	F2		- Refactor/rename (after highlighting a variable), NEED TO UPDATE IN SETTINGS TO WORK
+	Ctrl+Shift+F	- Find and Replace
+	Alt+Enter	- Show fixes, press enter to use fix
+	Shift+F2	- Add new file (After clicking on folder on the right), NEED TO INSTALL EXTENSION TO WORK
+	Ctrl+\+T	- Task list
+	Shift+Alt+F	- Format code to align properly
+	Ctrl+K+D	- Format code to align properly
+	
+
+-------------------
+ VS Code Shortcuts
+-------------------
+	
+	Ctrl+.		- Show fixes, press enter to use fix
+	F2		- Refactor/rename (after highlighting a variable), NEED TO UPDATE IN SETTINGS TO WORK
+	Ctrl+`		- Open terminal to use ng and npm commands
+	Shift+Alt+F	- Format code to align properly
+	
+	
+---------------------------------------------------------
+ Browser / Chrome Developer Tools / Clientside Debugging
+---------------------------------------------------------
+
+	Ctrl+P		- Opens textbox to type file name. Find source code file
+
+	Debug
+	-----
+
+	F8		- Let program run with debugging
+	F10		- Step one line forward in debugging
+	F11		- Step inside method/property on the current line of debugging

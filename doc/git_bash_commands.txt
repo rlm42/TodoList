@@ -1,0 +1,36 @@
+TFS is a centralized version control while 
+Git is distributed as everyone has a full copy of the whole repo and its history.
+
+Differences between TFS and Git:
+
+	https://docs.microsoft.com/en-gb/azure/devops/repos/tfvc/comparison-git-tfvc?view=azure-devops
+
+----------------------
+ Terminology
+----------------------
+
+	TFS				Git
+	---				---
+	check out/get latest		pull
+	check in			commit, push
+	merge				merge
+	
+----------------------
+ Git Commands
+----------------------
+
+	git clone {url_to_repository}							- download repository files to your machine
+	git status									- shows current status of the changed files
+	git add	*									- will add all the changed files to the staging
+	git add {path_to_folder}							- will add to staging all the files inside that folder
+	git add {file_name}								- will add to staging specific file
+	git reset									- reset staging of all the files
+	git commit -m "#2 - Created TodosController with REST actions"			- #2 is the task ID number on Azure Devops which you want to connect this commit
+											- link id to task in dev ops, m stands for message and can put a message in for the commit
+	git push
+
+Basic steps are add, commit, push	
+	
+
+	
+

@@ -1,0 +1,14 @@
+
+-------------------
+ Commands
+-------------------
+
+https://angular.io/cli
+
+ng new {app_name} --routing -S --style=scss	- create new angular application with routing, skiptests, and style scss
+ng build					- build angular application
+npm install					- use this to install missing dependencies/libraries/node modules	(npm = node package manager)
+
+
+
+Can run these commands in Gitbash

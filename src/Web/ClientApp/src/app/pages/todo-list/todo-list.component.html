@@ -1,0 +1,80 @@
+<!-- Heading Row -->
+<div class="row">
+    <div class="col-md"></div>
+    <div class="col-md">
+        <h1 class="text-center">Todo List</h1>
+    </div>
+    <div class="col-md"></div>
+</div>
+
+<br>
+<!-- Loading Indicator Row -->
+<div class="row">
+    <div class="col-md"></div>
+    <div class="col-md">
+        {{loadingText}}
+    </div>
+    <div class="col-md"></div>
+</div>
+
+<!-- Todo List Row -->
+<div class="row">
+
+    <!-- Column 1 -->
+    <div class="col-md"></div>
+
+    <!-- Column 2 -->
+    <div class="col-md">
+
+
+        <div class="card">
+            <table class="table table-striped table-hover table-borderless">
+                <tbody>
+                    <tr *ngFor="let item of todoList" [ngClass]="{'bg-success': item.isDone}">
+                        <!-- Delete Item -->
+                        <td>
+                            <a class="btn btn-remove" (click)="onClick_deleteItem(item.id)">
+                                <i [class]="icons.remove"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <!-- Item Name -->
+                            {{item.name}}
+                        </td>
+                            <!-- Is Done Check -->
+                        <td class="text-center">
+
+                            <!--  USING CHECKBOX to check item  -->
+                            <!-- <input type="checkbox" (click)="onClick_toggleItem($event, item.id)" [checked]="item.isDone"> -->
+
+                            <!--  USING LINK BUTTON to check item  -->
+                            <a class="btn btn-check" (click)="onClick_toggleItem(item)">
+                                <i [ngClass]="item.isDone ? icons.checkboxChecked : icons.checkboxEmpty"
+                                    aria-hidden="true"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr [formGroup]="formAddTodoItem">
+                        <!-- Input Field -->
+                        <td colspan="2">
+                            <input type="text" formControlName="name" (keydown.enter)="onKeydown_addItem_name()">
+
+                        </td>
+                        <!-- Submit Button -->
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="onClick_addItem()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; {{t.Add}}</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Column 3 -->
+    <div class="col-md"></div>
+</div>
